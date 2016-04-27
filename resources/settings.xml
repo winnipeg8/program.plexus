@@ -44,6 +44,8 @@
 		<setting id="engine_app" type="enum" values="All Addon|External App+Kodi Player|Official Ace Player|Torrent Controler Proxy" label="30153" default="0" visible="System.Platform.Android"/>
 		<setting id="ip_addr" type="text" label="30156" default="127.0.0.1" />
 		<setting id="aceporta" type="text" label="30157" default="62062" />
+		<setting id="ace_user" type="text" label="30166" default="username" />
+		<setting id="ace_password" type="text" label="30167" default="password" />
 		<setting id="playerport" type="text" label="30158" default="6878" visible="eq(-6,1)" />
 		<setting id="engine-status" type="bool" label="30159" default="true"/>
 		<setting label="" type="lsep" />
@@ -60,6 +62,7 @@
 		<setting id="acestream_cachefolder" type="text" label="" visible="False" default=""/>
 		<setting id="total_max_download_rate" type="text" label="" visible="False" default="0"/>
 		<setting id="total_max_upload_rate" type="text" label="" visible="False" default="0"/>
+
 	</category>
 
 </settings>

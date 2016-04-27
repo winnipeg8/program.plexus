@@ -299,6 +299,13 @@ class TSengine():
             if "arm" in os.uname()[4]:
                 try:
                     command = ["sh",os.path.join(pastaperfil,"acestream","start_acestream.sh"),"--client-console"]
+                    
+                    command.append('--login')
+                    command.append(settings.getSetting('ace_user'))
+
+                    command.append('--password')
+                    command.append(settings.getSetting('ace_password'))
+
                     if settings.getSetting('total_max_download_rate') != "0":
                         command.append('--download-limit')
                         command.append(settings.getSetting('total_max_download_rate'))
@@ -687,8 +694,8 @@ class TSServ(threading.Thread):
             try: self.version=params[0].split('=')[1]
             except: self.version='1.0.6'
             try: 
-            	match = re.compile('key=(.*)').findall(line)
-            	self.key = match[0].split(' ')[0]
+                match = re.compile('key=(.*)').findall(line)
+                self.key = match[0].split(' ')[0]
             except: self.key=None
         elif comm=='LOADRESP':
             fil = line
@@ -799,9 +806,9 @@ class TSServ(threading.Thread):
         
 #thread to run the kill command right after the user hits stop        
 def ace_control_thread():
-	while json.loads(xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"Player.GetActivePlayers","params":{},"id":3}'))["result"]:
-		xbmc.sleep(500)
-	stop_aceengine()
+    while json.loads(xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"Player.GetActivePlayers","params":{},"id":3}'))["result"]:
+        xbmc.sleep(500)
+    stop_aceengine()
 
 
 #TODO - Windows and proper cache clear

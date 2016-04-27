@@ -673,3 +673,11 @@ msgctxt "#30165"
 msgid "Custom Acestream engine shutdown command"
 msgstr ""
 
+msgctxt "#30166"
+msgid "User name"
+msgstr ""
+
+msgctxt "#30167"
+msgid "Password"
+msgstr ""
+
