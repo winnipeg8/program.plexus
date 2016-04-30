@@ -283,6 +283,21 @@ class TSengine():
                 if settings.getSetting('engine_app') == "1": xbmc.executebuiltin('XBMC.StartAndroidActivity("org.acestream.engine")')
                 else:
                     command = ["sh","/data/data/"+settings.getSetting('app_id')+"/files/program.plexus/org.acestream.engine/files/droidace.sh",settings.getSetting('app_id')]
+                    if settings.getSetting('ace_max_connections') != "0":
+                        command.append('--max-connections')
+                        command.append(settings.getSetting('ace_max_connections'))
+                    if settings.getSetting('ace_live_buffer') != "0":
+                        command.append('--max-live-buffer')
+                        command.append(settings.getSetting('ace_live_buffer'))
+                    if settings.getSetting('ace_cache_limit') != "0":
+                        command.append('--cache-limit')
+                        command.append(settings.getSetting('ace_cache_limit'))
+                    if settings.getSetting('ace_live_disk_cache_size') != "0":
+                        command.append('--live-disk-cache-size')
+                        command.append(settings.getSetting('ace_live_disk_cache_size'))
+                    if settings.getSetting('ace_max_file_size') != "0":
+                        command.append('--max-file-size')
+                        command.append(settings.getSetting('ace_max_file_size'))
                     if settings.getSetting('total_max_download_rate') != "0":
                         command.append('--download-limit')
                         command.append(settings.getSetting('total_max_download_rate'))
@@ -298,21 +313,29 @@ class TSengine():
             print("Linux not android..")
             if "arm" in os.uname()[4]:
                 try:
-                    command = ["sh",os.path.join(pastaperfil,"acestream","start_acestream.sh"),"--client-console"]
-                    
-                    command.append('--login')
-                    command.append(settings.getSetting('ace_user'))
-
-                    command.append('--password')
-                    command.append(settings.getSetting('ace_password'))
-
+                    command = ["sh",os.path.join(pastaperfil,"acestream","start_acestream.sh"),"--client-console"]                                     
+                    if settings.getSetting('ace_max_connections') != "0":
+                        command.append('--max-connections')
+                        command.append(settings.getSetting('ace_max_connections'))
+                    if settings.getSetting('ace_live_buffer') != "0":
+                        command.append('--max-live-buffer')
+                        command.append(settings.getSetting('ace_live_buffer'))
+                    if settings.getSetting('ace_cache_limit') != "0":
+                        command.append('--cache-limit')
+                        command.append(settings.getSetting('ace_cache_limit'))
+                    if settings.getSetting('ace_live_disk_cache_size') != "0":
+                        command.append('--live-disk-cache-size')
+                        command.append(settings.getSetting('ace_live_disk_cache_size'))
+                    if settings.getSetting('ace_max_file_size') != "0":
+                        command.append('--max-file-size')
+                        command.append(settings.getSetting('ace_max_file_size'))
                     if settings.getSetting('total_max_download_rate') != "0":
                         command.append('--download-limit')
                         command.append(settings.getSetting('total_max_download_rate'))
                     if settings.getSetting('total_max_upload_rate') != "0":
                         command.append('--upload-limit')
                         command.append(settings.getSetting('total_max_upload_rate'))
-                    self.proc = subprocess.Popen(command)
+                    self.proc = subprocess.Popen(command,clearCacheTime)
                 except:
                     self.sm("Not installed")
                     self.log.out("Not installed")
@@ -321,6 +344,21 @@ class TSengine():
             elif settings.getSetting('openeleci386') == "true" or settings.getSetting('openelecx86_64') == "true":
                 try:
                     command = ["sh",os.path.join(pastaperfil,'acestream','start.sh')]
+                    if settings.getSetting('ace_max_connections') != "0":
+                        command.append('--max-connections')
+                        command.append(settings.getSetting('ace_max_connections'))
+                    if settings.getSetting('ace_live_buffer') != "0":
+                        command.append('--max-live-buffer')
+                        command.append(settings.getSetting('ace_live_buffer'))
+                    if settings.getSetting('ace_cache_limit') != "0":
+                        command.append('--cache-limit')
+                        command.append(settings.getSetting('ace_cache_limit'))
+                    if settings.getSetting('ace_live_disk_cache_size') != "0":
+                        command.append('--live-disk-cache-size')
+                        command.append(settings.getSetting('ace_live_disk_cache_size'))
+                    if settings.getSetting('ace_max_file_size') != "0":
+                        command.append('--max-file-size')
+                        command.append(settings.getSetting('ace_max_file_size'))
                     if settings.getSetting('total_max_download_rate') != "0":
                         command.append('--download-limit')
                         command.append(settings.getSetting('total_max_download_rate'))
@@ -338,6 +376,21 @@ class TSengine():
                     acefolder = os.path.join(pastaperfil,'acestream')
                     acebin = os.path.join(pastaperfil,'acestream','acestreamengine')
                     command = [acebin,'--client-console','--lib-path',acefolder]
+                    if settings.getSetting('ace_max_connections') != "0":
+                        command.append('--max-connections')
+                        command.append(settings.getSetting('ace_max_connections'))
+                    if settings.getSetting('ace_live_buffer') != "0":
+                        command.append('--max-live-buffer')
+                        command.append(settings.getSetting('ace_live_buffer'))
+                    if settings.getSetting('ace_cache_limit') != "0":
+                        command.append('--cache-limit')
+                        command.append(settings.getSetting('ace_cache_limit'))
+                    if settings.getSetting('ace_live_disk_cache_size') != "0":
+                        command.append('--live-disk-cache-size')
+                        command.append(settings.getSetting('ace_live_disk_cache_size'))
+                    if settings.getSetting('ace_max_file_size') != "0":
+                        command.append('--max-file-size')
+                        command.append(settings.getSetting('ace_max_file_size'))
                     if settings.getSetting('total_max_download_rate') != "0":
                         command.append('--download-limit')
                         command.append(settings.getSetting('total_max_download_rate'))

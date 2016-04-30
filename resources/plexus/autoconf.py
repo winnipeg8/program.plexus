@@ -2,18 +2,18 @@
 
 """ Plexus  (c)  2015 enen92
 
-    This file contains a single function. It's a function that will run on the addon first boot to download and configure the system for acestream/sopcast. The platform will be automatically detected and the necessary files downloaded and extracted to the userdata. 
+    This file contains a single function. It's a function that will run on the addon first boot to download and configure the system for acestream/sopcast. The platform will be automatically detected and the necessary files downloaded and extracted to the userdata.
     This function will run if and only the setting "Download modules" on boot is enabled.
-    
+
     Functions:
-    
+
    	check_for_updates() -> Look for module updates between versions, force download them
    	firstconf() -> Configuration function, detects the platform, saves to settings, run configure sopcast/acestream functions
    	configure_sopcast() -> Configure Sopcast
    	configure_acestream() -> Configure Acestream
 
 """
-     
+
 import xbmc
 import xbmcgui
 import xbmcplugin
@@ -29,12 +29,11 @@ from plexusutils.webutils import download_tools,get_page_source
 from plexusutils.utilities import *
 
 """ Platform dependent files downloaded during the addon configuration"""
-trunkfolder = "https://plexus.svn.codeplex.com/svn/trunk"
+trunkfolder = "https://bitbucket.org/plexus-streams/plexus-streams/raw/releases/program.plexus"
 version_control = trunkfolder + "/Control/versions.info"
 
 #Linux Arm
 sopcast_raspberry = trunkfolder + "/Modules/Linux/arm/rpi2/sopcast-raspberry.tar.gz"
-acestream_rpi2 = trunkfolder + "/Modules/Linux/arm/rpi2/acestream-rpi2.tar.gz"
 
 #Linux i386 and x86_64 (including openelec)
 sopcast_linux_generico =  trunkfolder + "/Modules/Linux/Sopcastx86_64i386/sopcast_linux.tar.gz"
@@ -42,9 +41,11 @@ openelecx86_64_sopcast = trunkfolder + "/Modules/Linux/x86_64/Openelec/sopcast_o
 openeelcx86_64_acestream = trunkfolder + "/Modules/Linux/x86_64/Openelec/acestream_openelec64_3051.tar.gz"
 openelecxi386_sopcast = trunkfolder + "/Modules/Linux/i386/openelec/sopcast_openeleci386.tar.gz"
 openeelcxi386_acestream = trunkfolder + "/Modules/Linux/i386/openelec/acestream_openeleci386_303fix.tar.gz"
+
 #gen linux
 acestream_linux_x64_generic = trunkfolder + "/Modules/Linux/x86_64/acestream-linux-x86_64_3051.tar.gz"
 acestream_linux_i386_generic = trunkfolder + "/Modules/Linux/i386/acestream-linux-i386_303.tar.gz"
+
 #Android
 sopcast_apk = trunkfolder + "/Modules/Android/SopCast.apk.tar.gz"
 acestreamengine_apk_arm = trunkfolder + "/Modules/Android/AceStream-3.0.6-2in1.apk.tar.gz"
@@ -53,15 +54,18 @@ android_aceengine_arm = trunkfolder + "/Modules/Android/org.acestream.engine-arm
 android_aceengine_x86 = trunkfolder + "/Modules/Android/org.acestream.engine_x86.tar.gz"
 android_aceplayer_arm = trunkfolder + "/Modules/Android/AcePlayer-3.0.6-2in1.apk.tar.gz"
 android_aceplayer_x86 = trunkfolder + "/Modules/Android/AcePlayer-3.0.6-2in1.apk.tar.gz"
+
+#Windows Files
+acestream_windows = trunkfolder + "/Modules/Windows/acewindows-aceengine3.0.4.tar.gz"
+srvany_executable = trunkfolder + "/Modules/Windows/srvany.tar.gz"
+srvany_permissions = trunkfolder + "/Modules/Windows/sopcastp2p-permissions.txt"
+
 #Mac OSX #TODO
 osx_i386_sopcast = trunkfolder + "/Modules/MacOsx/i386/sopcast_osxi386.tar.gz"
 osx_i386_acestream = trunkfolder + "/Modules/MacOsx/AceStreamWineOSX.zip"
 osx_x64_sopcast = trunkfolder + "/Modules/MacOsx/x86_64/sopcast_osx64.tar.gz"
 osx_x64_acestream = trunkfolder + "/Modules/MacOsx/AceStreamWineOSX.zip"
-#Windows Files
-acestream_windows = trunkfolder + "/Modules/Windows/acewindows-aceengine3.0.4.tar.gz"
-srvany_executable = trunkfolder + "/Modules/Windows/srvany.tar.gz"
-srvany_permissions = trunkfolder + "/Modules/Windows/sopcastp2p-permissions.txt"
+
 
 def check_for_updates():
 	try:
@@ -71,11 +75,11 @@ def check_for_updates():
 		version_source = eval(version_source)
 		if xbmc.getCondVisibility('system.platform.linux') and not xbmc.getCondVisibility('system.platform.Android'):
 			if "arm" in os.uname()[4]:
-				if settings.getSetting('rpi2') == "true": platf = "rpi2"		
+				if settings.getSetting('rpi2') == "true": platf = "rpi2"
 			elif os.uname()[4] == "i386" or os.uname()[4] == "i686":
 				if settings.getSetting('openeleci386') == "true": platf = "openeleci386"
 				else: platf = "linuxi386"
-			elif os.uname()[4] == "x86_64": 
+			elif os.uname()[4] == "x86_64":
 				if settings.getSetting('openelecx86_64') == "true": platf = "openelecx64"
 				else: platf = "linux_x86_64"
 		elif xbmc.getCondVisibility('system.platform.windows'): platf = "windows"
@@ -93,10 +97,10 @@ def check_for_updates():
 		except: acestream_update = False
 		if acestream_update and sopcast_update: settings.setSetting('last_version_check',value=versao)
 		return
-		
-				
-		
-			
+
+
+
+
 def first_conf():
 	settings.setSetting('last_version_check',value='')
 	settings.setSetting('sopcast_version',value='')
@@ -118,34 +122,34 @@ def first_conf():
 					settings.setSetting('openelecx86_64',value='true')
 				else:
 					opcao= xbmcgui.Dialog().yesno(translate(30000), translate(30074))
-					if opcao: 
+					if opcao:
 						settings.setSetting('openelecx86_64',value='true')
 			elif os.uname()[4] == "i386" or os.uname()[4] == "i686":
-				if re.search(os.uname()[1],"openelec",re.IGNORECASE):	
+				if re.search(os.uname()[1],"openelec",re.IGNORECASE):
 					settings.setSetting('openeleci386',value='true')
 				else:
 					opcao= xbmcgui.Dialog().yesno(translate(30000), translate(30075))
-					if opcao: 
+					if opcao:
 						settings.setSetting('openeleci386',value='true')
 			check_for_updates()
-			
+
 	elif xbmc.getCondVisibility('system.platform.windows'):
 		check_for_updates()
 
 	elif xbmc.getCondVisibility('system.platform.Android'):
 		check_for_updates()
-		
+
 	elif xbmc.getCondVisibility('System.Platform.OSX'):
 		mensagemok(translate(30000),"Not available for OSX for now")
 		sys.exit(0)
 		#check_for_updates()
-		
-	settings.setSetting('autoconfig',value="false")
-		
 
-	
+	settings.setSetting('autoconfig',value="false")
+
+
+
 def configure_sopcast(latest_version):
-	#Configuration for LINUX 
+	#Configuration for LINUX
 	if xbmc.getCondVisibility('system.platform.linux') and not xbmc.getCondVisibility('system.platform.Android'):
 		print("Detected OS: Linux")
 		#Linux Armv
@@ -278,8 +282,8 @@ def configure_sopcast(latest_version):
                             print("System Users", users)
                             srvany_final_location = os.path.join(sopcast_executable.replace("SopCast.exe",""),"srvany.exe")
                             srvany_download_location = os.path.join(addonpath,"srvany.exe")
-                            srvanytgz_download_location = os.path.join(addonpath,"srvany.tar.gz")                            
-                            download_tools().Downloader(srvany_executable,srvanytgz_download_location,translate(30087),translate(30000)) 
+                            srvanytgz_download_location = os.path.join(addonpath,"srvany.tar.gz")
+                            download_tools().Downloader(srvany_executable,srvanytgz_download_location,translate(30087),translate(30000))
                             xbmc.sleep(1000)
                             if tarfile.is_tarfile(srvanytgz_download_location):
                                 path_libraries = addonpath
@@ -371,7 +375,7 @@ def configure_sopcast(latest_version):
                                             mensagemprogresso.close()
                                             if latest_version: settings.setSetting('sopcast_version',value=latest_version)
                                             return
-    
+
 	elif xbmc.getCondVisibility('System.Platform.OSX'):
 		print("Detected OS: Mac OSX")
 		available = False
@@ -383,9 +387,9 @@ def configure_sopcast(latest_version):
 			available = True
 		else:
 			available = False
-		if available == True:		
+		if available == True:
 			if not os.path.exists(pastaperfil):
-				xbmcvfs.mkdir(pastaperfil)		
+				xbmcvfs.mkdir(pastaperfil)
 			MAC_KIT = os.path.join(addonpath,mac_package.split("/")[-1])
 			download_tools().Downloader(mac_package,MAC_KIT,translate(30076),translate(30000))
 			if tarfile.is_tarfile(MAC_KIT):
@@ -401,7 +405,7 @@ def configure_sopcast(latest_version):
 		else:
 			mensagemok(translate(30000),translate(30100))
 			return
-				
+
 	elif xbmc.getCondVisibility('System.Platform.Android'):
 
 		print("Detected OS: Android")
@@ -436,8 +440,8 @@ def configure_sopcast(latest_version):
 
 		if found == True:
 			xbmc_data_path = os.path.join("/data", "data", app_id)
-			
-			
+
+
 			if os.path.exists(xbmc_data_path) and uid == os.stat(xbmc_data_path).st_uid:
 				android_binary_dir = os.path.join(xbmc_data_path, "files", "program.plexus")
 				if not os.path.exists(android_binary_dir):
@@ -452,7 +456,7 @@ def configure_sopcast(latest_version):
 				settings.setSetting('android_sopclient',value=binary_path)
 				opcao= xbmcgui.Dialog().yesno(translate(30000), translate(30101),translate(30103))
 				if not opcao:
-					settings.setSetting('external-sopcast',value='1')
+					settings.setSetting('external-sopcast',value='0')
 					sopcast_installed = True
 					mensagemok(translate(30000),translate(30099))
 				else:
@@ -470,7 +474,7 @@ def configure_sopcast(latest_version):
 						download_tools().remove(sopfile)
 					mensagemok(translate(30000),translate(30107),pasta,translate(30108))
 					sopcast_installed = True
-					settings.setSetting('external-sopcast',value='0')
+					settings.setSetting('external-sopcast',value='1')
 					mensagemok(translate(30000),translate(30099))
 				if latest_version: settings.setSetting('sopcast_version',value=latest_version)
 				return
@@ -478,22 +482,20 @@ def configure_sopcast(latest_version):
 		else:
 			mensagemok(translate(30000),translate(30109))
 			return
-			
+
 
 def configure_acestream(latest_version):
-	#Configuration for LINUX 
+	#Configuration for LINUX
 	if xbmc.getCondVisibility('system.platform.linux') and not xbmc.getCondVisibility('system.platform.Android'):
 		print("Detected OS: Linux")
 		if "arm" in os.uname()[4]:
 			print("Linux Arm")
 			if settings.getSetting('rpi2') == "true":
-				ACE_KIT = os.path.join(addonpath,acestream_rpi2.split("/")[-1])
-				download_tools().Downloader(acestream_rpi2,ACE_KIT,translate(30110),translate(30000))
+				ACE_KIT = os.path.join(addonpath,"resources","binaries","acestream_rpi.tar.gz")
 				if tarfile.is_tarfile(ACE_KIT):
 					path_libraries = os.path.join(pastaperfil)
 					download_tools().extract(ACE_KIT,path_libraries)
 					xbmc.sleep(500)
-					download_tools().remove(ACE_KIT)
 				#set chroot to executable
 				binary_path = os.path.join(pastaperfil,"acestream","chroot")
 				st = os.stat(binary_path)
@@ -563,7 +565,7 @@ def configure_acestream(latest_version):
 			download_tools().remove(SPSC_KIT)
 		if latest_version: settings.setSetting('acestream_version',value=latest_version)
 		return
-    
+
 	elif xbmc.getCondVisibility('System.Platform.OSX'):
 		print("Detected OS: Mac OSX")
 		available = False
@@ -575,7 +577,7 @@ def configure_acestream(latest_version):
 			available = True
 		else:
 			available = False
-		if available == True:			
+		if available == True:
 			MAC_KIT = os.path.join('/Applications',mac_package.split("/")[-1])
 			if not xbmcvfs.exists(os.path.join('/Applications','Ace Stream.app')):
 				download_tools().Downloader(mac_package,MAC_KIT,translate(30110),translate(30000))
@@ -593,8 +595,8 @@ def configure_acestream(latest_version):
 		else:
 			mensagemok(translate(30000),translate(30100))
 			return
-			
-				
+
+
 	elif xbmc.getCondVisibility('System.Platform.Android'):
 
 		print("Detected OS: Android")
@@ -713,10 +715,10 @@ def configure_acestream(latest_version):
 				mensagemok(translate(30000),translate(30125),pasta,translate(30108))
 				opcao= xbmcgui.Dialog().yesno(translate(30000), translate(30126))
 				if opcao:
-					settings.setSetting('engine_app','2')							
+					settings.setSetting('engine_app','2')
 			if latest_version: settings.setSetting('acestream_version',value=latest_version)
 			mensagemok(translate(30000),translate(30127))
-			return			
+			return
 		else:
 			mensagemok(translate(30000),translate(30109))
 			return

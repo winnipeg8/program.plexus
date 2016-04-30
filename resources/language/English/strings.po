@@ -673,11 +673,22 @@ msgctxt "#30165"
 msgid "Custom Acestream engine shutdown command"
 msgstr ""
 
-msgctxt "#30166"
-msgid "User name"
+msgctxt "#30170"
+msgid "Max. connections"
 msgstr ""
 
-msgctxt "#30167"
-msgid "Password"
+msgctxt "#30171"
+msgid "Live buffer"
 msgstr ""
 
+msgctxt "#30172"
+msgid "Cache limit"
+msgstr ""
+
+msgctxt "#30173"
+msgid "Live disk cache size"
+msgstr ""
+
+msgctxt "#30174"
+msgid "Max. file size"
+msgstr ""
