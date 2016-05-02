@@ -335,7 +335,7 @@ class TSengine():
                     if settings.getSetting('total_max_upload_rate') != "0":
                         command.append('--upload-limit')
                         command.append(settings.getSetting('total_max_upload_rate'))
-                    self.proc = subprocess.Popen(command,clearCacheTime)
+                    self.proc = subprocess.Popen(command)
                 except:
                     self.sm("Not installed")
                     self.log.out("Not installed")
