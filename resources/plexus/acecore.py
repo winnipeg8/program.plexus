@@ -286,6 +286,9 @@ class TSengine():
                     if settings.getSetting('ace_max_connections') != "0":
                         command.append('--max-connections')
                         command.append(settings.getSetting('ace_max_connections'))
+                    if settings.getSetting('ace_max_peers') != "0":
+                        command.append('--max-peers')
+                        command.append(settings.getSetting('ace_max_peers'))
                     if settings.getSetting('ace_live_buffer') != "0":
                         command.append('--max-live-buffer')
                         command.append(settings.getSetting('ace_live_buffer'))

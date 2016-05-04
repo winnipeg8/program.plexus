@@ -45,6 +45,7 @@
 		<setting id="ip_addr" type="text" label="30156" default="127.0.0.1" />
 		<setting id="aceporta" type="text" label="30157" default="62062" />
 		<setting id="ace_max_connections" type="text" label="30170" default="100" />
+		<setting id="ace_max_peers" type="text" label="30175" default="50" />
 		<setting id="ace_live_buffer" type="text" label="30171" default="60" />
 		<setting id="ace_cache_limit" type="text" label="30172" default="10" />
 		<setting id="ace_live_disk_cache_size" type="text" label="30173" default="8589934592" />
